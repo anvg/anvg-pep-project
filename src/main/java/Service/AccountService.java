@@ -22,6 +22,12 @@ public class AccountService {
         return account;
     }
 
+    public Account getAccountByUsername(String targetUsername){
+        Account account = null;
+        account = accountDAO.getAccountByUsername(targetUsername);
+        return account;
+    }
+
     public boolean insertAccount(Account account){
         boolean accountAdded = false;
         //Account account = accountDAO.insertAccount(account);

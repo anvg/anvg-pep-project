@@ -18,8 +18,8 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
-        app.get("/localhost:8080/accounts/{account_id}", this::loginInvalidUsername);
-        app.post("/localhost:8080/register", this::registerUserSucessful);
+        app.get("/accounts/{account_id}", this::loginInvalidUsername);
+        app.post("/register", this::registerUserSucessful);
 
         return app;
     }
@@ -33,6 +33,8 @@ public class SocialMediaController {
     }
     
     private void loginInvalidUsername(Context context){
+        Account account = context.bodyAsClass(Account.class);
+        String username = account.getUsername();
         context.pathParam("username");
     }
     private void registerUserSucessful(Context context){
