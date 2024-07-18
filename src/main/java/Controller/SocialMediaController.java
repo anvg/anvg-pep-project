@@ -17,6 +17,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+        app.get("localhost:8080/register", this::registerHandler);
 
         return app;
     }
@@ -27,6 +28,12 @@ public class SocialMediaController {
      */
     private void exampleHandler(Context context) {
         context.json("sample text");
+    }
+    
+    private void registerHandler(Context context){
+        context.json(new Account());
+        context.status(200);
+        context.status(401);
     }
 
 
