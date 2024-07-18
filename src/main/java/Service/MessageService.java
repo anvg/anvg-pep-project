@@ -22,9 +22,9 @@ public class MessageService {
         return messageList;
     }
 
-    public Message insertMessage(Message message){
-        Message target = null;
+    public boolean insertMessage(Message message){
+        boolean messagedAdded = false;
         //Message target = messageDAO.insertMessage(message);
-        return target;
+        return messagedAdded;
     }
 }
