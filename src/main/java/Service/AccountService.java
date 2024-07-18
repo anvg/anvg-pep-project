@@ -22,6 +22,12 @@ public class AccountService {
         return account;
     }
 
+    public List<Account> getAllAcounts(){
+        List<Account> listAccount = new ArrayList<>();
+        //account = accountDAO.getAllAccounts();
+        return listAccount;
+    }
+
     public Account getAccountByUsername(String targetUsername){
         Account account = null;
         account = accountDAO.getAccountByUsername(targetUsername);

@@ -35,7 +35,6 @@ public class SocialMediaController {
     private void loginInvalidUsername(Context context){
         Account account = context.bodyAsClass(Account.class);
         String username = account.getUsername();
-        context.pathParam("username");
     }
     private void registerUserSucessful(Context context){
         context.json(new Account(1, " ", " "));
