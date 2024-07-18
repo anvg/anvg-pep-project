@@ -28,4 +28,26 @@ public class AccountDAO {
         }
         return account;
     }
+
+    public List<Account> getAllAccounts(){
+        List<Account> account = new ArrayList<>();
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "SELECT * FROM Account";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int accountId = rs.getInt("account_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                account.add(new Account(accountId, username, password));
+            }
+            conn.close();
+            
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return account;
+    }
 }

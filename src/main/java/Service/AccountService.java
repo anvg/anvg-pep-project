@@ -24,7 +24,7 @@ public class AccountService {
 
     public List<Account> getAllAcounts(){
         List<Account> listAccount = new ArrayList<>();
-        //account = accountDAO.getAllAccounts();
+        listAccount = accountDAO.getAllAccounts();
         return listAccount;
     }
 
