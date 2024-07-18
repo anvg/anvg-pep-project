@@ -25,6 +25,6 @@ public class MessageService {
     public Message insertMessage(Message message){
         Message target = null;
         //Message target = messageDAO.insertMessage(message);
-        return message;
+        return target;
     }
 }

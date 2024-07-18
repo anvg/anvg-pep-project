@@ -2,6 +2,7 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import Model.Account;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -17,7 +18,8 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
-        app.get("localhost:8080/register", this::registerHandler);
+        app.get("/localhost:8080/accounts/{account_id}", this::loginInvalidUsername);
+        app.post("/localhost:8080/register", this::registerUserSucessful);
 
         return app;
     }
@@ -30,10 +32,14 @@ public class SocialMediaController {
         context.json("sample text");
     }
     
-    private void registerHandler(Context context){
-        context.json(new Account());
-        context.status(200);
+    private void loginInvalidUsername(Context context){
+        context.pathParam("username");
+    }
+    private void registerUserSucessful(Context context){
+        context.json(new Account(1, " ", " "));
         context.status(401);
+        context.status(200);
+        
     }
 
 
