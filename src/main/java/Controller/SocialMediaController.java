@@ -3,6 +3,9 @@ package Controller;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import Model.Account;
+import DAO.AccountDAO;
+
+import java.util.*;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -35,6 +38,14 @@ public class SocialMediaController {
     private void loginInvalidUsername(Context context){
         Account account = context.bodyAsClass(Account.class);
         String username = account.getUsername();
+        AccountDAO accountDAO = new AccountDAO();
+        //List<Account> listAccount = accountDAO.getAllAccounts();
+        Account target = accountDAO.getAccountByUsername(username);
+        if(target.equals(null)){
+            context.status(200);
+        }else{
+            context.status(400);
+        }
     }
     private void registerUserSucessful(Context context){
         context.json(new Account(1, " ", " "));
