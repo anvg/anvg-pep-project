@@ -11,8 +11,10 @@ public class AccountDAO {
         boolean isRegister = false;
         final boolean USERNAME_NOT_BLANK = account.getUsername().length() != 0;
         final boolean PASSWORD_FOUR_CHARACTER_MINIMUN = account.getPassword().length() >= 4;
-       
-        if(USERNAME_NOT_BLANK && PASSWORD_FOUR_CHARACTER_MINIMUN){
+        final boolean ACCOUNT_EXISTS = getAccountByUsername(account.getUsername()) == null;
+        
+        if(USERNAME_NOT_BLANK && PASSWORD_FOUR_CHARACTER_MINIMUN &&
+        ACCOUNT_EXISTS){
             try(Connection conn = ConnectionUtil.getConnection()){
                 String query = "INSERT INTO Account(account_id, username, " +
                 "password) VALUES (?, ?, ?)";
