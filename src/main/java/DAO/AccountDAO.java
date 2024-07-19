@@ -9,27 +9,32 @@ import java.util.*;
 public class AccountDAO {
     public boolean registerUser(Account account){
         boolean isRegister = false;
-        
-        try(Connection conn = ConnectionUtil.getConnection()){
-            String query = "INSERT INTO Account(account_id, username, " +
-            "password) VALUES (?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(query);
-
-            int idNumber = generateAccountId(account);
-            if(idNumber != -1){
-                account.setAccount_id(idNumber+1);;
+        final boolean USERNAME_NOT_BLANK = account.getUsername().length() != 0;
+        final boolean PASSWORD_FOUR_CHARACTER_MINIMUN = account.getPassword().length() >= 4;
+       
+        if(USERNAME_NOT_BLANK && PASSWORD_FOUR_CHARACTER_MINIMUN){
+            try(Connection conn = ConnectionUtil.getConnection()){
+                String query = "INSERT INTO Account(account_id, username, " +
+                "password) VALUES (?, ?, ?)";
+                PreparedStatement ps = conn.prepareStatement(query);
+    
+                int idNumber = generateAccountId(account);
+                if(idNumber != -1){
+                    account.setAccount_id(idNumber+1);;
+                }
+                ps.setInt(1, account.getAccount_id());
+                ps.setString(2, account.getUsername());
+                ps.setString(3, account.getPassword());
+                ps.executeUpdate();
+                
+                conn.close();
+    
+                return true;
+            }catch(SQLException e){
+                System.out.println("Create Message SQL Error: " + e);
             }
-            ps.setInt(1, account.getAccount_id());
-            ps.setString(2, account.getUsername());
-            ps.setString(3, account.getPassword());
-            ps.executeUpdate();
-            
-            conn.close();
-
-            return true;
-        }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
         }
+        
         return isRegister;
     }
 

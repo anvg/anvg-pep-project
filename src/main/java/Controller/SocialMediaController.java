@@ -45,7 +45,7 @@ public class SocialMediaController {
             context.status(200);
             context.json(account);
         }else{
-            context.status(401);
+            context.status(400);
         }
         
     }
