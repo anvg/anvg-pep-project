@@ -7,6 +7,27 @@ import java.sql.*;
 import java.util.*;
 
 public class AccountDAO {
+    public boolean registerUser(Account account){
+        boolean isRegister = false;
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "INSERT INTO Account(username, password) " +
+            "VALUES (?, ?)";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPassword());
+            ps.executeUpdate();
+
+            conn.close();
+            
+            return true;
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return isRegister;
+    }
+
+
     public Account getAccountByUsername(String targetUsername){
         Account account = null;
         
