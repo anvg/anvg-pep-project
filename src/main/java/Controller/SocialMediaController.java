@@ -25,6 +25,7 @@ public class SocialMediaController {
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
         app.post("/messages", this::createMessageHandler);
+        app.get("/messages", this::retrieveAllMessagesHandler);
 
         return app;
     }
@@ -81,6 +82,15 @@ public class SocialMediaController {
         }else{
             context.status(400);
         }
+    }
+
+    private void retrieveAllMessagesHandler(Context context){
+        MessageService messageService = new MessageService();
+        
+        List<Message> messageList = messageService.getAllMessage();
+
+        context.json(messageList);
+        context.status(200);
     }
 
 

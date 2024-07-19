@@ -105,15 +105,15 @@ public class MessageDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int messageId = rs.getInt("message_id");
-                int postBy = rs.getInt("posted_by");
-                String messageText = rs.getString("mesasge_text");
-                Long timePosted = rs.getLong("time_posted_epoch");
-                message.add(new Message(messageId, postBy, messageText, timePosted));
+                Message record = new Message(rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                rs.getLong("time_posted_epoch"));
+                message.add(record);
             }
             conn.close();
         }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
+            System.out.println("Retrieve All Message SQL Error: " + e);
         }
         return message;
     }
