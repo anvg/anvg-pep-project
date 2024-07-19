@@ -63,11 +63,11 @@ public class MessageDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int messageId = rs.getInt("message_id");
+                int localMessageId = rs.getInt("message_id");
                 int postBy = rs.getInt("posted_by");
                 String messageText = rs.getString("mesasge_text");
                 Long timePosted = rs.getLong("time_posted_epoch");
-                message = new Message(messageId, postBy, messageText, timePosted);
+                message = new Message(localMessageId, postBy, messageText, timePosted);
 
                 return message;
             }
@@ -107,7 +107,7 @@ public class MessageDAO {
             ps.setString(2, message.getMessage_text());
             ps.setLong(3, message.getTime_posted_epoch());
             ps.setInt(4, message.getMessage_id());
-            
+
             ps.executeUpdate();
             
             conn.close();
@@ -117,4 +117,5 @@ public class MessageDAO {
         }
         return messageUpdated;
     }
+    
 }
