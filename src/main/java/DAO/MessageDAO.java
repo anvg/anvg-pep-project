@@ -135,7 +135,7 @@ public class MessageDAO {
                 rs.getLong("time_posted_epoch"));
 
                 message = target;
-                
+
                 return message;
             }
             conn.close();
@@ -158,7 +158,7 @@ public class MessageDAO {
             conn.close();
             return true;
         }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
+            System.out.println("Delete Message SQL Error: " + e);
         }
         return messageDeleted;
     }

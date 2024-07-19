@@ -30,6 +30,10 @@ public class MessageService {
         return messageDAO.retrieveMessageByMessageId(messageId);
     }
 
+    public boolean deleteMessageById(int id){
+        return messageDAO.deleteMessageByMessageId(id);
+    }
+
     public boolean insertMessage(Message message){
         boolean messagedAdded = false;
         //Message target = messageDAO.insertMessage(message);
