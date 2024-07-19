@@ -28,6 +28,8 @@ public class SocialMediaController {
         app.get("/messages", this::retrieveAllMessagesHandler);
         app.get("/messages/{message_id}", this::retrieveMessageById);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
+        app.get("/accounts/{account_id}/messages", this::retrieveAllMessageByUser);
         return app;
     }
 
@@ -124,6 +126,33 @@ public class SocialMediaController {
         }else{
             context.json("");
         }
+
+    }
+
+    private void updateMessageByIdHandler(Context context){
+        MessageService messageService = new MessageService();
+        int id = Integer.parseInt(context.pathParam("message_id"));
+        String message = context.pathParam("message_text");
+        Message target = messageService.updateMessageById(id, message);
+
+        target = new Message(1, 1, "updated messge", 1669947792);
+        if(target != null){
+            context.status(200);
+            context.json(target);
+        }else{
+            context.status(400);
+        }
+    }
+
+    private void retrieveAllMessageByUser(Context context){
+        MessageService messageService = new MessageService();
+        int id = Integer.parseInt(context.pathParam("account_id"));
+        List<Message> listMessage = messageService.retrieveAllMessageByUser(id);
+
+        listMessage.add(new Message(1, 1, "test message 1", 1669947792));
+
+        context.json(listMessage);
+        context.status(200);
 
     }
 

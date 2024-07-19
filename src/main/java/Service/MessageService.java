@@ -34,6 +34,15 @@ public class MessageService {
         return messageDAO.deleteMessageByMessageId(id);
     }
 
+    public Message updateMessageById(int id, String message){
+        return messageDAO.updateMessageText(id, message);
+    }
+
+    public List<Message> retrieveAllMessageByUser(int id){
+        List<Message> messageList = messageDAO.retrieveAllMessageForUser(id);
+        return messageList;
+    }
+
     public boolean insertMessage(Message message){
         boolean messagedAdded = false;
         //Message target = messageDAO.insertMessage(message);
