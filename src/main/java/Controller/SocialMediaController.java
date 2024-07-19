@@ -23,6 +23,7 @@ public class SocialMediaController {
 
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
+        app.post("/login", this::loginHandler);
 
         return app;
     }
@@ -48,6 +49,23 @@ public class SocialMediaController {
             context.status(400);
         }
         
+    }
+
+    private void loginHandler(Context context){
+        AccountDAO accountDAO = new AccountDAO();
+        Account httpRequest = context.bodyAsClass(Account.class);
+        String USERNAME = httpRequest.getUsername();
+        String PASSWORD = httpRequest.getPassword();
+
+        Account databaseRequest = accountDAO.getAccountByUsernameAndPassword(USERNAME,
+         PASSWORD);
+
+        if(httpRequest.equals(databaseRequest)){
+            context.status(200);
+            context.json(databaseRequest);
+        }else{
+            context.status(401);
+        }
     }
 
 

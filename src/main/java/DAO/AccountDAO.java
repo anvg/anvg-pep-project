@@ -62,6 +62,31 @@ public class AccountDAO {
         return nextId;
     }
 
+    public Account getAccount(Account account){
+        Account target = null;
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "SELECT * FROM Account WHERE account_id = ? &&" +
+            "username = ? AND password = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, account.getAccount_id());
+            ps.setString(2, account.getUsername());
+            ps.setString(3, account.getPassword());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int accountId = rs.getInt("account_id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                account = new Account(accountId, username, password);
+            }
+            conn.close();
+
+        }catch(SQLException e){
+            System.out.println("Select Account SQL Error: " + e);
+        }
+        return target;
+    }
 
     public Account getAccountByUsername(String targetUsername){
         Account account = null;
@@ -89,10 +114,13 @@ public class AccountDAO {
         Account account = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
-            String query = "SELECT password FROM Account WHERE username = ? AND password = ?";
+            String query = "SELECT username, password FROM Account "
+            + "WHERE username = ? AND password = ?";
             PreparedStatement ps = conn.prepareStatement(query);
+
             ps.setString(1, targetUsername);
             ps.setString(2, targetPassword);
+
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -101,6 +129,8 @@ public class AccountDAO {
                 String password = rs.getString("password");
                 account = new Account(accountId, username, password);
             }
+
+
             conn.close();
         }catch(SQLException e){
             System.out.println("Get Account Username and Password SQL Error: " + e);
