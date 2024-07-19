@@ -17,6 +17,10 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
+    public boolean createMessage(Message message){
+        return messageDAO.createMessage(message);
+    }
+
     public List<Message> getAllMessage(){
         List<Message> messageList = messageDAO.retrieveAllMessage();
         return messageList;

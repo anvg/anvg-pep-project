@@ -24,6 +24,7 @@ public class AccountDAO {
                 if(idNumber != -1){
                     account.setAccount_id(idNumber+1);;
                 }
+                
                 ps.setInt(1, account.getAccount_id());
                 ps.setString(2, account.getUsername());
                 ps.setString(3, account.getPassword());

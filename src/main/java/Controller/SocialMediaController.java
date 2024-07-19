@@ -70,13 +70,14 @@ public class SocialMediaController {
     }
 
     private void createMessageHandler(Context context){
-        MessageService messageDAO = new MessageService();
+        MessageService messageService = new MessageService();
         Message message = context.bodyAsClass(Message.class);
 
-        //boolean messageCreated = messageDAO.createMessage(message);
+        boolean messageCreated = messageService.createMessage(message);
 
-        if(true){
+        if(messageCreated){
             context.status(200);
+            context.json(message);
         }else{
             context.status(400);
         }
