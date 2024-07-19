@@ -22,7 +22,6 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
 
         app.get("example-endpoint", this::exampleHandler);
-        app.get("/accounts/{account_id}", ctx -> loginInvalidUsername(ctx));
         app.post("/register", this::registerHandler);
 
         return app;
@@ -36,18 +35,6 @@ public class SocialMediaController {
         context.json("sample text");
     }
     
-    private void loginInvalidUsername(Context context){
-        String username =context.pathParam("account_id");
-        AccountDAO accountDAO = new AccountDAO();
-        //List<Account> listAccount = accountDAO.getAllAccounts();
-        Account target = accountDAO.getAccountByUsername(username);
-        if(target == null){
-            context.status(400);
-        }else{
-            context.status(200);
-        }
-
-    }
     private void registerHandler(Context context){
         AccountDAO accountDAO = new AccountDAO();
         Account account = context.bodyAsClass(Account.class);
