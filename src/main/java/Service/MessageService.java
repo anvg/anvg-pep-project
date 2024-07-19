@@ -26,6 +26,10 @@ public class MessageService {
         return messageList;
     }
 
+    public Message getMessageById(int messageId){
+        return messageDAO.retrieveMessageByMessageId(messageId);
+    }
+
     public boolean insertMessage(Message message){
         boolean messagedAdded = false;
         //Message target = messageDAO.insertMessage(message);

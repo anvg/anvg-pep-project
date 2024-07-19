@@ -129,12 +129,13 @@ public class MessageDAO {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int localMessageId = rs.getInt("message_id");
-                int postBy = rs.getInt("posted_by");
-                String messageText = rs.getString("mesasge_text");
-                Long timePosted = rs.getLong("time_posted_epoch");
-                message = new Message(localMessageId, postBy, messageText, timePosted);
+                Message target = new Message(rs.getInt("message_id"),
+                rs.getInt("posted_by"),
+                rs.getString("message_text"),
+                rs.getLong("time_posted_epoch"));
 
+                message = target;
+                
                 return message;
             }
             conn.close();
