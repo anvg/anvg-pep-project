@@ -52,7 +52,7 @@ public class MessageDAO {
         return message;
     }
 
-    public Message retrieveMessageByMessageId(int mesasgeId){
+    public Message retrieveMessageByMessageId(int messageId){
         Message message = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
@@ -94,5 +94,27 @@ public class MessageDAO {
             System.out.println("Create Message SQL Error: " + e);
         }
         return messageDeleted;
+    }
+
+    public boolean updateMessageText(Message message){
+        boolean messageUpdated = false;
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "UPDATE Message SET posted_by = ?, message_text = ?, " +
+            "time_posted_epoch = ? ON message_id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            
+            ps.setInt(1, message.getPosted_by());   
+            ps.setString(2, message.getMessage_text());
+            ps.setLong(3, message.getTime_posted_epoch());
+            ps.setInt(4, message.getMessage_id());
+            
+            ps.executeUpdate();
+            
+            conn.close();
+            return true;
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return messageUpdated;
     }
 }
