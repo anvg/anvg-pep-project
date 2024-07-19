@@ -23,7 +23,7 @@ public class SocialMediaController {
 
         app.get("example-endpoint", this::exampleHandler);
         app.get("/accounts/{account_id}", ctx -> loginInvalidUsername(ctx));
-        app.post("/register", this::registerUserSucessful);
+        app.post("/register", this::registerHandler);
 
         return app;
     }
@@ -48,10 +48,18 @@ public class SocialMediaController {
         }
 
     }
-    private void registerUserSucessful(Context context){
-        context.json(new Account(1, " ", " "));
-        context.status(401);
-        context.status(200);
+    private void registerHandler(Context context){
+        AccountDAO accountDAO = new AccountDAO();
+        Account account = context.bodyAsClass(Account.class);
+
+        boolean isRegister = accountDAO.registerUser(account);
+        
+        if(isRegister){
+            context.status(200);
+            context.json(account);
+        }else{
+            context.status(401);
+        }
         
     }
 

@@ -11,20 +11,48 @@ public class AccountDAO {
         boolean isRegister = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
-            String query = "INSERT INTO Account(username, password) " +
-            "VALUES (?, ?)";
+            String query = "INSERT INTO Account(account_id, username, " +
+            "password) VALUES (?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(query);
-            ps.setString(1, account.getUsername());
-            ps.setString(2, account.getPassword());
-            ps.executeUpdate();
 
-            conn.close();
+            int idNumber = generateAccountId(account);
+            if(idNumber != -1){
+                account.setAccount_id(idNumber+1);;
+            }
+            ps.setInt(1, account.getAccount_id());
+            ps.setString(2, account.getUsername());
+            ps.setString(3, account.getPassword());
+            ps.executeUpdate();
             
+            conn.close();
+
             return true;
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
         return isRegister;
+    }
+
+    public int generateAccountId(Account account){
+        int nextId = -1;
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "SELECT MAX(account_id) FROM Account";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                nextId = rs.getInt("MAX(account_id)");
+            }
+            
+
+            conn.close();
+
+            return nextId;
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return nextId;
     }
 
 
