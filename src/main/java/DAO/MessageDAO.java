@@ -40,7 +40,6 @@ public class MessageDAO {
                 
                 conn.close();
 
-                return true;
             }catch(SQLException e){
                 System.out.println("Create Message SQL Error: " + e);
             }
