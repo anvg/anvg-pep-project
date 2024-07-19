@@ -77,4 +77,22 @@ public class MessageDAO {
         }
         return message;
     }
+
+    public boolean deleteMessageByMessageId(int messageId){
+        boolean messageDeleted = false;
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "DELETE FROM Message WHERE message_id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            
+            ps.setInt(1, messageId);   
+            ps.executeUpdate();
+            
+            conn.close();
+            return true;
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return messageDeleted;
+    }
 }
