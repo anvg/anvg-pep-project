@@ -2,8 +2,8 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import Model.Account;
-import DAO.AccountDAO;
+import Model.*;
+import Service.*;
 
 import java.util.*;
 
@@ -24,6 +24,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
+        app.post("/messages", this::createMessageHandler);
 
         return app;
     }
@@ -37,10 +38,10 @@ public class SocialMediaController {
     }
     
     private void registerHandler(Context context){
-        AccountDAO accountDAO = new AccountDAO();
+        AccountService accountService = new AccountService();
         Account account = context.bodyAsClass(Account.class);
 
-        boolean isRegister = accountDAO.registerUser(account);
+        boolean isRegister = accountService.registerUser(account);
         
         if(isRegister){
             context.status(200);
@@ -52,12 +53,12 @@ public class SocialMediaController {
     }
 
     private void loginHandler(Context context){
-        AccountDAO accountDAO = new AccountDAO();
+        AccountService accountService = new AccountService();
         Account httpRequest = context.bodyAsClass(Account.class);
         String USERNAME = httpRequest.getUsername();
         String PASSWORD = httpRequest.getPassword();
 
-        Account databaseRequest = accountDAO.getAccountByUsernameAndPassword(USERNAME,
+        Account databaseRequest = accountService.getAccountByUsernameAndPassword(USERNAME,
          PASSWORD);
 
         if(httpRequest.equals(databaseRequest)){
@@ -65,6 +66,19 @@ public class SocialMediaController {
             context.json(databaseRequest);
         }else{
             context.status(401);
+        }
+    }
+
+    private void createMessageHandler(Context context){
+        MessageService messageDAO = new MessageService();
+        Message message = context.bodyAsClass(Message.class);
+
+        //boolean messageCreated = messageDAO.createMessage(message);
+
+        if(true){
+            context.status(200);
+        }else{
+            context.status(400);
         }
     }
 

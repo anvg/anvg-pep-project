@@ -16,6 +16,10 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
+    public boolean registerUser(Account account){
+        return accountDAO.registerUser(account);
+    }
+
     public Account getAccount(int accountID){
         Account account = null;
         //account = accountDAO.getAccountById(accountID);
