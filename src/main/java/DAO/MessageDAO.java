@@ -7,6 +7,29 @@ import java.sql.*;
 import java.util.*;
 
 public class MessageDAO {
+
+    public boolean createMessage(Message message){
+        boolean messageInserted = false;
+        
+        try(Connection conn = ConnectionUtil.getConnection()){
+            String query = "INSERT INTO Message(posted_by, " + 
+            "message_text, time_posted) VALUES(?, ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(query);
+            
+            ps.setInt(1, message.getPosted_by());
+            ps.setString(2, message.getMessage_text());
+            ps.setLong(3, message.getTime_posted_epoch());
+            
+            ps.executeUpdate();
+            
+            conn.close();
+            return true;
+        }catch(SQLException e){
+            System.out.println("Create Message SQL Error: " + e);
+        }
+        return messageInserted;
+    }
+
     public List<Message> retrieveAllMessage(){
         List<Message> message = new ArrayList<>();
         
