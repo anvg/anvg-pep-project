@@ -20,15 +20,10 @@ public class AccountService {
         return accountDAO.registerUser(account);
     }
 
-    public Account getAccount(int accountID){
-        Account account = null;
-        //account = accountDAO.getAccountById(accountID);
-        return account;
-    }
-
     public List<Account> getAllAcounts(){
         List<Account> listAccount = new ArrayList<>();
         listAccount = accountDAO.getAllAccounts();
+
         return listAccount;
     }
 
@@ -42,6 +37,7 @@ public class AccountService {
     public Account getAccountByUsername(String targetUsername){
         Account account = null;
         account = accountDAO.getAccountByUsername(targetUsername);
+        
         return account;
     }
 
@@ -52,12 +48,6 @@ public class AccountService {
         targetPassword);
 
         return account;
-    }
-
-    public boolean insertAccount(Account account){
-        boolean accountAdded = false;
-        //Account account = accountDAO.insertAccount(account);
-        return accountAdded;
     }
     
 }
