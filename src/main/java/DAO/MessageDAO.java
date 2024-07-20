@@ -20,6 +20,7 @@ public class MessageDAO {
         if(IS_MESSAGE_BELOW_MAX_LIMIT && IS_EMPTY_MESSAGE && IS_REAL_USER){
 
             try(Connection conn = ConnectionUtil.getConnection()){
+
                 String query = "INSERT INTO Message(message_id, " +
                 "posted_by, message_text, time_posted_epoch) " + 
                 "VALUES(?, ?, ?, ?)";
@@ -56,6 +57,7 @@ public class MessageDAO {
         boolean accountExists = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT posted_by FROM Message INNER JOIN " + 
             "Account ON Message.posted_by = Account.account_id";
             PreparedStatement ps = conn.prepareStatement(query);
@@ -69,9 +71,11 @@ public class MessageDAO {
                 
             }
             conn.close();
+            
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
+        
         return accountExists;
     }
 
@@ -79,6 +83,7 @@ public class MessageDAO {
         int nextId = -1;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT MAX(message_id) FROM Message";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -87,13 +92,12 @@ public class MessageDAO {
                 nextId = rs.getInt("MAX(message_id)");
             }
             
-
             conn.close();
 
-            return nextId;
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
+        
         return nextId;
     }
 
