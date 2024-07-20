@@ -266,7 +266,7 @@ public class MessageDAO {
             
             conn.close();
         }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
+            System.out.println("Create All Message SQL Error: " + e);
         }
         
         return message;
