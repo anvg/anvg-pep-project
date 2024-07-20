@@ -56,14 +56,13 @@ public class AccountDAO {
             while(rs.next()){
                 nextId = rs.getInt("MAX(account_id)");
             }
-            
 
             conn.close();
 
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
-        
+
         return nextId;
     }
 
@@ -71,12 +70,15 @@ public class AccountDAO {
         Account target = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT * FROM Account WHERE account_id = ? &&" +
             "username = ? AND password = ?";
             PreparedStatement ps = conn.prepareStatement(query);
+
             ps.setInt(1, account.getAccount_id());
             ps.setString(2, account.getUsername());
             ps.setString(3, account.getPassword());
+
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -90,6 +92,7 @@ public class AccountDAO {
         }catch(SQLException e){
             System.out.println("Select Account SQL Error: " + e);
         }
+
         return target;
     }
 
@@ -97,6 +100,7 @@ public class AccountDAO {
         Account account = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT username FROM Account WHERE username = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, targetUsername);
@@ -109,9 +113,11 @@ public class AccountDAO {
                 account = new Account(accountId, username, password);
             }
             conn.close();
+
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
+
         return account;
     }
 
@@ -119,13 +125,13 @@ public class AccountDAO {
         Account account = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT account_id, username, password FROM Account "
             + "WHERE username = ? AND password = ?";
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.setString(1, targetUsername);
             ps.setString(2, targetPassword);
-
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -137,17 +143,20 @@ public class AccountDAO {
 
 
             conn.close();
+
         }catch(SQLException e){
             System.out.println("Get Account Username and Password SQL Error: " + e);
         }
+
         return account;
     }
 
 
     public List<Account> getAllAccounts(){
-        List<Account> account = new ArrayList<>();
+        List<Account> accountList = new ArrayList<>();
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT * FROM Account";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -157,13 +166,14 @@ public class AccountDAO {
                 int accountId = rs.getInt("account_id");
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                account.add(new Account(accountId, username, password));
+                accountList.add(new Account(accountId, username, password));
             }
             conn.close();
             
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
-        return account;
+        
+        return accountList;
     }
 }
