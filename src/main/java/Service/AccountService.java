@@ -27,20 +27,6 @@ public class AccountService {
         return listAccount;
     }
 
-    public Account getAccount(Account account){
-        Account target = null;
-        target = accountDAO.getAccount(account);
-
-        return target;
-    }
-
-    public Account getAccountByUsername(String targetUsername){
-        Account account = null;
-        account = accountDAO.getAccountByUsername(targetUsername);
-        
-        return account;
-    }
-
     public Account getAccountByUsernameAndPassword(String targetUsername,
     String targetPassword){
         Account account = null;
