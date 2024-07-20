@@ -97,7 +97,7 @@ public class MessageDAO {
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
-        
+
         return nextId;
     }
 
@@ -105,49 +105,56 @@ public class MessageDAO {
         List<Message> message = new ArrayList<>();
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT * FROM Message";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
+
                 Message record = new Message(rs.getInt("message_id"),
                 rs.getInt("posted_by"),
                 rs.getString("message_text"),
                 rs.getLong("time_posted_epoch"));
                 message.add(record);
+
             }
             conn.close();
+
         }catch(SQLException e){
             System.out.println("Retrieve All Message SQL Error: " + e);
         }
+
         return message;
     }
 
     public Message retrieveMessageByMessageId(int messageId){
-        Message message = null;
+        Message target = null;
         
         try(Connection conn = ConnectionUtil.getConnection()){
-            String query = "SELECT * FROM Message WHERE message_id = ?";
 
+            String query = "SELECT * FROM Message WHERE message_id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
+
             ps.setInt(1, messageId);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                Message target = new Message(rs.getInt("message_id"),
+
+                Message messageCursor = new Message(rs.getInt("message_id"),
                 rs.getInt("posted_by"),
                 rs.getString("message_text"),
                 rs.getLong("time_posted_epoch"));
 
-                message = target;
+                target = messageCursor;
 
-                return message;
+                return target;
             }
             conn.close();
         }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
+            System.out.println("Retrieve Message SQL Error: " + e);
         }
-        return message;
+        return target;
     }
 
     public boolean deleteMessageByMessageId(int messageId){
