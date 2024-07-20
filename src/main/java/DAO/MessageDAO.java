@@ -157,25 +157,28 @@ public class MessageDAO {
         return target;
     }
 
-    public boolean deleteMessageByMessageId(int messageId){
-        boolean messageDeleted = false;
-        
-        try(Connection conn = ConnectionUtil.getConnection()){
+    public Message deleteMessageByMessageId(int messageId){
+        Message target = null;
 
-            String query = "DELETE FROM Message WHERE message_id = ?";
-            PreparedStatement ps = conn.prepareStatement(query);
-            
-            ps.setInt(1, messageId);   
-            ps.executeUpdate();
-            
-            conn.close();
-            messageDeleted = true;
+        target = retrieveMessageByMessageId(messageId);
 
-        }catch(SQLException e){
-            System.out.println("Delete Message SQL Error: " + e);
+        if(target != null){
+            try(Connection conn = ConnectionUtil.getConnection()){
+
+                String query = "DELETE FROM Message WHERE message_id = ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                
+                ps.setInt(1, messageId);   
+                ps.executeUpdate();
+                
+                conn.close();
+    
+            }catch(SQLException e){
+                System.out.println("Delete Message SQL Error: " + e);
+            }
         }
 
-        return messageDeleted;
+        return target;
     }
 
     public Message updateMessageText(Message message){

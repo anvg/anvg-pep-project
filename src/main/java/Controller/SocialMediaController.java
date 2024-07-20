@@ -114,16 +114,10 @@ public class SocialMediaController {
     private void deleteMessageByIdHandler(Context context){
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("message_id"));
-        boolean isDeleted = false;
 
-        Message target = messageService.getMessageById(id);
+        Message target = messageService.deleteMessageById(id);
 
-        // check if target by ID exist before deleting it
         if(target != null){
-            isDeleted = messageService.deleteMessageById(id);   
-        }
-
-        if(isDeleted){
             context.json(target);
         }else{
             context.json("");
