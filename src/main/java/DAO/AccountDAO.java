@@ -48,6 +48,7 @@ public class AccountDAO {
         int nextId = -1;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT MAX(account_id) FROM Account";
             PreparedStatement ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -59,10 +60,10 @@ public class AccountDAO {
 
             conn.close();
 
-            return nextId;
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
+        
         return nextId;
     }
 
