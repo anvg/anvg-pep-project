@@ -43,9 +43,4 @@ public class MessageService {
         return messageList;
     }
 
-    public boolean insertMessage(Message message){
-        boolean messagedAdded = false;
-        //Message target = messageDAO.insertMessage(message);
-        return messagedAdded;
-    }
 }
