@@ -26,10 +26,10 @@ public class SocialMediaController {
         app.post("/login", this::loginHandler);
         app.post("/messages", this::createMessageHandler);
         app.get("/messages", this::retrieveAllMessagesHandler);
-        app.get("/messages/{message_id}", this::retrieveMessageById);
+        app.get("/messages/{message_id}", this::retrieveMessageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageByIdHandler);
         app.patch("/messages/{message_id}", this::updateMessageByIdHandler);
-        app.get("/accounts/{account_id}/messages", this::retrieveAllMessageByUser);
+        app.get("/accounts/{account_id}/messages", this::retrieveAllMessageByUserHandler);
         return app;
     }
 
@@ -96,7 +96,7 @@ public class SocialMediaController {
         context.status(200);
     }
 
-    private void retrieveMessageById(Context context){
+    private void retrieveMessageByIdHandler(Context context){
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("message_id"));
 
@@ -146,7 +146,7 @@ public class SocialMediaController {
         }
     }
 
-    private void retrieveAllMessageByUser(Context context){
+    private void retrieveAllMessageByUserHandler(Context context){
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("account_id"));
         List<Message> listMessage = messageService.retrieveAllMessageByUser(id);
