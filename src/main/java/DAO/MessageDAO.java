@@ -161,6 +161,7 @@ public class MessageDAO {
         boolean messageDeleted = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "DELETE FROM Message WHERE message_id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             
@@ -168,10 +169,12 @@ public class MessageDAO {
             ps.executeUpdate();
             
             conn.close();
-            return true;
+            messageDeleted = true;
+
         }catch(SQLException e){
             System.out.println("Delete Message SQL Error: " + e);
         }
+
         return messageDeleted;
     }
 
