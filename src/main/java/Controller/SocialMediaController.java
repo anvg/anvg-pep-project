@@ -101,8 +101,8 @@ public class SocialMediaController {
         int id = Integer.parseInt(context.pathParam("message_id"));
 
         Message target = messageService.getMessageById(id);
-        context.status(200);
 
+        context.status(200);
         if(target != null){
             context.json(target);
         }else{
@@ -114,9 +114,10 @@ public class SocialMediaController {
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("message_id"));
         boolean isDeleted = false;
-        
+
         Message target = messageService.getMessageById(id);
 
+        // check if target by ID exist before deleting it
         if(target != null){
             isDeleted = messageService.deleteMessageById(id);   
         }
