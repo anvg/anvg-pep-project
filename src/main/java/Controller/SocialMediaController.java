@@ -65,7 +65,7 @@ public class SocialMediaController {
         Account databaseRequest = accountService.getAccountByUsernameAndPassword(USERNAME,
          PASSWORD);
 
-        if(httpRequest.equals(databaseRequest)){
+        if(databaseRequest != null){
             context.status(200);
             context.json(databaseRequest);
         }else{
@@ -148,9 +148,7 @@ public class SocialMediaController {
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("account_id"));
         List<Message> listMessage = messageService.retrieveAllMessageByUser(id);
-
-        listMessage.add(new Message(1, 1, "test message 1", 1669947792));
-
+        
         context.json(listMessage);
         context.status(200);
 

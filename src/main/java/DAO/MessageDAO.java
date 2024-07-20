@@ -186,11 +186,16 @@ public class MessageDAO {
     public List<Message> retrieveAllMessageForUser(int accountId){
         List<Message> message = new ArrayList<>();
         
+        
         try(Connection conn = ConnectionUtil.getConnection()){
             
-            String query = "SELECT * FROM Messages";
+            String query = "SELECT Message.* FROM Message " + 
+            "INNER JOIN Account ON Message.posted_by = " +
+            "Account.account_id WHERE account_id = ?";
+
+            
             PreparedStatement ps = conn.prepareStatement(query);
-            //ps.setInt(1, accountId);
+            ps.setInt(1, accountId);
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
@@ -201,10 +206,12 @@ public class MessageDAO {
 
                 message.add(currentMessage);
             }
+            
             conn.close();
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
+        
         return message;
     }
 }
