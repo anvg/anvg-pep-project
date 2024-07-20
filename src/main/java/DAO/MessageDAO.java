@@ -27,6 +27,7 @@ public class MessageDAO {
 
                 int messageId = generateMessageId(message);
 
+                //used to simulate message_id auto_increment
                 if(messageId != -1){
                     message.setMessage_id(messageId+1);
                 }
@@ -165,7 +166,7 @@ public class MessageDAO {
 
     public Message updateMessageText(Message message){
         Message target = null;
-        
+
         final boolean MESSAGE_HAS_CONTENT = 
         message.getMessage_text().length() != 0;
         final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
