@@ -190,7 +190,9 @@ public class MessageDAO {
 
         if(MESSAGE_HAS_CONTENT && MESSAGE_UNDER_CHARACTER_LIMIT && 
         MESSAGE_EXISTS){
+
             try(Connection conn = ConnectionUtil.getConnection()){
+
                 String query = "UPDATE Message SET posted_by, " + 
                 "message_text = ?, time_posted_epoch = ?" +
                 "ON message_id = ?";
@@ -218,6 +220,7 @@ public class MessageDAO {
         boolean messageExist = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
+
             String query = "SELECT message_id FROM Message " + 
             "WHERE message_id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
@@ -232,7 +235,7 @@ public class MessageDAO {
             }
             conn.close();
         }catch(SQLException e){
-            System.out.println("Create Message SQL Error: " + e);
+            System.out.println("Select Message by ID SQL Error: " + e);
         }
         return messageExist;
     }
