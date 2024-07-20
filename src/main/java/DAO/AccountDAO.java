@@ -15,12 +15,15 @@ public class AccountDAO {
         
         if(USERNAME_NOT_BLANK && PASSWORD_FOUR_CHARACTER_MINIMUN &&
         ACCOUNT_EXISTS){
+
             try(Connection conn = ConnectionUtil.getConnection()){
                 String query = "INSERT INTO Account(account_id, username, " +
                 "password) VALUES (?, ?, ?)";
                 PreparedStatement ps = conn.prepareStatement(query);
     
                 int idNumber = generateAccountId(account);
+
+                // simulate account_id auto_increment
                 if(idNumber != -1){
                     account.setAccount_id(idNumber+1);;
                 }
@@ -30,9 +33,9 @@ public class AccountDAO {
                 ps.setString(3, account.getPassword());
                 ps.executeUpdate();
                 
+                isRegister = true;
                 conn.close();
-    
-                return true;
+
             }catch(SQLException e){
                 System.out.println("Create Message SQL Error: " + e);
             }
