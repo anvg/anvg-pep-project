@@ -131,12 +131,14 @@ public class SocialMediaController {
 
     private void updateMessageByIdHandler(Context context){
         MessageService messageService = new MessageService();
-        int id = Integer.parseInt(context.pathParam("message_id"));
-        String message = context.pathParam("message_text");
-        Message target = messageService.updateMessageById(id, message);
+        //int id = Integer.parseInt(context.pathParam("message_id"));
+        Message message = context.bodyAsClass(Message.class);
+        int id = message.getMessage_id();
+        String bodyText = message.getMessage_text();
 
-        target = new Message(1, 1, "updated messge", 1669947792);
-        if(target != null){
+        Message target = messageService.updateMessageById(message);
+
+       if(target != null){
             context.status(200);
             context.json(target);
         }else{

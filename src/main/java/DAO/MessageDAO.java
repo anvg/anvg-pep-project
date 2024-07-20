@@ -163,24 +163,63 @@ public class MessageDAO {
         return messageDeleted;
     }
 
-    public Message updateMessageText(int id, String message){
+    public Message updateMessageText(Message message){
         Message target = null;
+        
+        final boolean MESSAGE_HAS_CONTENT = 
+        message.getMessage_text().length() != 0;
+        final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
+        message.getMessage_text().length() <= 255;
+        final boolean MESSAGE_EXISTS = 
+        retrievableMessageId(message.getMessage_id());
+
+        if(MESSAGE_HAS_CONTENT && MESSAGE_UNDER_CHARACTER_LIMIT && 
+        MESSAGE_EXISTS){
+            try(Connection conn = ConnectionUtil.getConnection()){
+                String query = "UPDATE Message SET posted_by, " + 
+                "message_text = ?, time_posted_epoch = ?" +
+                "ON message_id = ?";
+                PreparedStatement ps = conn.prepareStatement(query);
+                
+                ps.setInt(1, message.getPosted_by());
+                ps.setString(2, message.getMessage_text());
+                ps.setLong(3, message.getTime_posted_epoch());
+                ps.setInt(4, message.getMessage_id());
+    
+                ps.executeUpdate();
+                target = message;
+                
+                conn.close();
+    
+            }catch(SQLException e){
+                System.out.println("Create Message SQL Error: " + e);
+            }
+        }
+
+        return target;
+    }
+
+    public boolean retrievableMessageId(int id){
+        boolean messageExist = false;
+        
         try(Connection conn = ConnectionUtil.getConnection()){
-            String query = "UPDATE Message SET message_text = ? " +
-            "ON message_id = ?";
+            String query = "SELECT message_id FROM Message " + 
+            "WHERE message_id = ?";
             PreparedStatement ps = conn.prepareStatement(query);
-            
-            ps.setString(1, message);
-            ps.setInt(2, id);
+            ResultSet rs = ps.executeQuery();
 
-            ps.executeUpdate();
-            
+            while(rs.next()){
+                int targetPostedBy = rs.getInt("posted_by");
+                if(id == targetPostedBy){
+                    messageExist = true;
+                }
+                
+            }
             conn.close();
-
         }catch(SQLException e){
             System.out.println("Create Message SQL Error: " + e);
         }
-        return target;
+        return messageExist;
     }
     
     public List<Message> retrieveAllMessageForUser(int accountId){
