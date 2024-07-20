@@ -59,8 +59,8 @@ public class SocialMediaController {
     private void loginHandler(Context context){
         AccountService accountService = new AccountService();
         Account httpRequest = context.bodyAsClass(Account.class);
-        String USERNAME = httpRequest.getUsername();
-        String PASSWORD = httpRequest.getPassword();
+        final String USERNAME = httpRequest.getUsername();
+        final String PASSWORD = httpRequest.getPassword();
 
         Account databaseRequest = accountService.getAccountByUsernameAndPassword(USERNAME,
          PASSWORD);
