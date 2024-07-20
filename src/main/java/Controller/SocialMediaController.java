@@ -45,9 +45,9 @@ public class SocialMediaController {
         AccountService accountService = new AccountService();
         Account account = context.bodyAsClass(Account.class);
 
-        boolean isRegister = accountService.registerUser(account);
+        boolean registerationSaved = accountService.registerUser(account);
         
-        if(isRegister){
+        if(registerationSaved){
             context.status(200);
             context.json(account);
         }else{
