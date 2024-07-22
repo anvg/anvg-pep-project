@@ -15,7 +15,7 @@ public class MessageDAO {
         message.getMessage_text().length() < 255;
         final boolean IS_EMPTY_MESSAGE = 
         message.getMessage_text().length() != 0;
-        final boolean IS_REAL_USER = retrieveAccountId(message.getPosted_by());
+        final boolean IS_REAL_USER = doesAccountExists(message.getPosted_by());
         
         if(IS_MESSAGE_BELOW_MAX_LIMIT && IS_EMPTY_MESSAGE && IS_REAL_USER){
 
@@ -53,7 +53,7 @@ public class MessageDAO {
         return messageInserted;
     }
 
-    private boolean retrieveAccountId(int postedBy){
+    private boolean doesAccountExists(int postedBy){
         boolean accountExists = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
