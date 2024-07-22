@@ -129,13 +129,16 @@ public class SocialMediaController {
         MessageService messageService = new MessageService();
         int id = Integer.parseInt(context.pathParam("message_id"));
         Message message = context.bodyAsClass(Message.class);
-        //int id = message.getMessage_id();
-        //String bodyText = message.getMessage_text();
-        //Message message = messageService.getMessageById(id);
+        final boolean MESSAGE_HAS_CONTENT = 
+            message.getMessage_text().length() != 0;
+            final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
+            message.getMessage_text().length() <= 255;
 
-        Message result = messageService.updateMessageById(message, id);
-
-       if(result != null){
+        Message result = messageService.updateMessageById(id);
+        
+       if(result != null && MESSAGE_HAS_CONTENT && 
+       MESSAGE_UNDER_CHARACTER_LIMIT){
+        result.setMessage_text(message.getMessage_text());
             context.status(200);
             context.json(result);
         }else{

@@ -53,7 +53,7 @@ public class MessageDAO {
         return messageInserted;
     }
 
-    public boolean retrieveAccountId(int postedBy){
+    private boolean retrieveAccountId(int postedBy){
         boolean accountExists = false;
         
         try(Connection conn = ConnectionUtil.getConnection()){
@@ -79,7 +79,7 @@ public class MessageDAO {
         return accountExists;
     }
 
-    public int generateMessageId(Message message){
+    private int generateMessageId(Message message){
         int nextId = -1;
         
         try(Connection conn = ConnectionUtil.getConnection()){
@@ -181,43 +181,31 @@ public class MessageDAO {
         return target;
     }
 
-    public Message updateMessageText(Message message, int id){
+    public Message updateMessageText(int id){
         Message target = retrieveMessageByMessageId(id);
 
-        if (target != null){
-            final boolean MESSAGE_HAS_CONTENT = 
-            message.getMessage_text().length() != 0;
-            final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
-            message.getMessage_text().length() <= 255;
-            final boolean MESSAGE_EXISTS = 
-            retrievableMessageId(id);
+        if (doesMessageExists(target)){
 
-            if(MESSAGE_HAS_CONTENT && MESSAGE_UNDER_CHARACTER_LIMIT && 
-            MESSAGE_EXISTS){
+            try(Connection conn = ConnectionUtil.getConnection()){
     
-                try(Connection conn = ConnectionUtil.getConnection()){
-    
-                    String query = "UPDATE Message SET posted_by, " + 
-                    "message_text = ?, time_posted_epoch = ?" +
-                    "ON message_id = ?";
-                    PreparedStatement ps = conn.prepareStatement(query);
+            String query = "UPDATE Message SET posted_by, " + 
+                "message_text = ?, time_posted_epoch = ?" +
+                "ON message_id = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
                     
-                    ps.setInt(1, message.getPosted_by());
-                    ps.setString(2, message.getMessage_text());
-                    ps.setLong(3, message.getTime_posted_epoch());
-                    ps.setInt(4, message.getMessage_id());
+            ps.setInt(1, target.getPosted_by());
+            ps.setString(2, target.getMessage_text());
+            ps.setLong(3, target.getTime_posted_epoch());
+            ps.setInt(4, target.getMessage_id());
         
-                    ps.executeUpdate();
+            ps.executeUpdate();
                     
-                    conn.close();
+            conn.close();
         
-                }catch(SQLException e){
-                    System.out.println("Create Message SQL Error: " + e);
-                }
+            }catch(SQLException e){
+                System.out.println("Create Message SQL Error: " + e);
             }
-    
-        }else{
-            target = null;
+
         }
        
         return target;
@@ -245,6 +233,10 @@ public class MessageDAO {
             System.out.println("Select Message by ID SQL Error: " + e);
         }
         return messageExist;
+    }
+
+    private boolean doesMessageExists(Message message){
+        return message != null;
     }
     
     public List<Message> retrieveAllMessageForUser(int accountId){
