@@ -34,8 +34,8 @@ public class MessageService {
         return messageDAO.deleteMessageByMessageId(id);
     }
 
-    public Message updateMessageById(Message message){
-        return messageDAO.updateMessageText(message);
+    public Message updateMessageById(Message message, int id){
+        return messageDAO.updateMessageText(message, id);
     }
 
     public List<Message> retrieveAllMessageByUser(int id){

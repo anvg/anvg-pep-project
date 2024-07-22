@@ -181,41 +181,45 @@ public class MessageDAO {
         return target;
     }
 
-    public Message updateMessageText(Message message){
-        Message target = null;
+    public Message updateMessageText(Message message, int id){
+        Message target = retrieveMessageByMessageId(id);
 
-        final boolean MESSAGE_HAS_CONTENT = 
-        message.getMessage_text().length() != 0;
-        final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
-        message.getMessage_text().length() <= 255;
-        final boolean MESSAGE_EXISTS = 
-        retrievableMessageId(message.getMessage_id());
+        if (target != null){
+            final boolean MESSAGE_HAS_CONTENT = 
+            message.getMessage_text().length() != 0;
+            final boolean MESSAGE_UNDER_CHARACTER_LIMIT = 
+            message.getMessage_text().length() <= 255;
+            final boolean MESSAGE_EXISTS = 
+            retrievableMessageId(id);
 
-        if(MESSAGE_HAS_CONTENT && MESSAGE_UNDER_CHARACTER_LIMIT && 
-        MESSAGE_EXISTS){
-
-            try(Connection conn = ConnectionUtil.getConnection()){
-
-                String query = "UPDATE Message SET posted_by, " + 
-                "message_text = ?, time_posted_epoch = ?" +
-                "ON message_id = ?";
-                PreparedStatement ps = conn.prepareStatement(query);
-                
-                ps.setInt(1, message.getPosted_by());
-                ps.setString(2, message.getMessage_text());
-                ps.setLong(3, message.getTime_posted_epoch());
-                ps.setInt(4, message.getMessage_id());
+            if(MESSAGE_HAS_CONTENT && MESSAGE_UNDER_CHARACTER_LIMIT && 
+            MESSAGE_EXISTS){
     
-                ps.executeUpdate();
-                target = message;
-                
-                conn.close();
+                try(Connection conn = ConnectionUtil.getConnection()){
     
-            }catch(SQLException e){
-                System.out.println("Create Message SQL Error: " + e);
+                    String query = "UPDATE Message SET posted_by, " + 
+                    "message_text = ?, time_posted_epoch = ?" +
+                    "ON message_id = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    
+                    ps.setInt(1, message.getPosted_by());
+                    ps.setString(2, message.getMessage_text());
+                    ps.setLong(3, message.getTime_posted_epoch());
+                    ps.setInt(4, message.getMessage_id());
+        
+                    ps.executeUpdate();
+                    
+                    conn.close();
+        
+                }catch(SQLException e){
+                    System.out.println("Create Message SQL Error: " + e);
+                }
             }
+    
+        }else{
+            target = null;
         }
-
+       
         return target;
     }
 
